@@ -13,3 +13,4 @@
 .idea/
 
 Gemfile.lock
+.rake_tasks~
