@@ -20,7 +20,7 @@ module FactoryBotGenerator
 
     def render
       ActionView::Base.new(File.dirname(__FILE__)).render(
-        file: 'factory_generator.erb',
+        file: 'factory_bot_generator.erb',
         locals: {
           name:    name,
           columns: columns,
