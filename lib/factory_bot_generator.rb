@@ -6,28 +6,22 @@ module FactoryBotGenerator
   class Base
     QUOTE_AROUND_VALUE_TYPES = %i[string date datetime text].freeze
     EXCLUDE_COLUMNS = %w[created_at updated_at].freeze
+    TEMPLATE_PATH = File.join(File.dirname(__FILE__), 'factory_bot_generator.erb')
+    TEMPLATE = File.read(TEMPLATE_PATH)
 
     def self.render(record, options = {})
       new(record, options).render
     end
-
-    attr_reader :record, :options
 
     def initialize(record, options)
       @record = record
       @options = options
     end
 
+    attr_reader :record, :options
+
     def render
-      ActionView::Base.new(File.dirname(__FILE__)).render(
-        file: 'factory_bot_generator.erb',
-        locals: {
-          name:    name,
-          columns: columns,
-          record:  record,
-          indent:  indent
-        }
-      )
+      ERB.new(TEMPLATE, trim_mode: '-').result(binding)
     end
 
     private
@@ -41,11 +35,11 @@ module FactoryBotGenerator
     end
 
     def indent
-      @indent ||= columns.max_by(&:size).size
+      @indent ||= columns.max_by(&:size).size + 1
     end
 
     def record_class
-      record.class
+      @record_class ||= record.class
     end
 
     def exclude_columns
