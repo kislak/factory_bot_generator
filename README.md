@@ -29,6 +29,11 @@ puts FactoryBotGenerator::Base.render(user, { exclude: [:password, :last_name, :
 
 ```
 
+## Deploy
+```
+gem build factory_bot_generator
+gem push factory_bot_generator-0.3.0.gem
+```
 
 
 ## License

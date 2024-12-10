@@ -21,6 +21,15 @@ module FactoryBotGenerator
     attr_reader :record, :options
 
     def render
+      render_long + "\n" + render_short
+    end
+
+    def render_long
+      ERB.new(TEMPLATE, trim_mode: '-').result(binding)
+    end
+
+    def render_short
+      columns.reject! { record.public_send(_1).blank? }
       ERB.new(TEMPLATE, trim_mode: '-').result(binding)
     end
 

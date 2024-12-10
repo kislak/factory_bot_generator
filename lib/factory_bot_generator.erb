@@ -2,19 +2,7 @@ FactoryBot.define do
   factory :<%= name %>, class: <%= record.class %> do
   <%- columns.each do |column| -%>
     <%- quote = FactoryBotGenerator::Base::QUOTE_AROUND_VALUE_TYPES.include?(record.class.columns_hash[column].type) -%>
-    <%= "%-#{indent}s" % column %> <%= "'" if quote %><%= record.public_send(column) %><%= "'" if quote %>
-  <%- end -%>
-  end
-end
-
---------------------------------
-
-FactoryBot.define do
-  factory :<%= name %>, class: <%= record.class %> do
-  <%- columns.each do |column| -%>
-    <%- next if record.public_send(column).blank? -%>
-    <%- quote = FactoryBotGenerator::Base::QUOTE_AROUND_VALUE_TYPES.include?(record.class.columns_hash[column].type) -%>
-    <%= "%-#{indent}s" % column %> <%= "'" if quote %><%= record.public_send(column) %><%= "'" if quote %>
+    <%= "#{ "%-#{indent}s" % column } { #{ "'" if quote }#{ record.public_send(column) }#{ "'" if quote } }" %>
   <%- end -%>
   end
 end
